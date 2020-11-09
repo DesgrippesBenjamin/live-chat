@@ -1,0 +1,76 @@
+body{
+    box-sizing: border-box;
+}
+#messages{ 
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
+    overflow: scroll;
+}
+.chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+  }
+.window{
+    display: block;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 400px;
+    width: 300px;
+    font-size: 13px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+.form-container{
+    max-width: 300px;
+}
+.text {
+    width: 221px;
+}
+.author {
+    color: brown;
+}
+li div {
+    display: flex;
+    max-width: 200px;
+}
+li{
+    list-style: none;
+}
+li h1 {
+    font-size: 13px;
+    margin-top: 25px;
+}
+li p {
+    border: 1px solid black;
+    border-radius: 5px;
+    color: #ffffff;
+    padding: 5px;
+    background-color: rgb(48, 87, 213);
+}
+li span{
+    font-size: 6px;
+}
+.open-button {
+    background-color: #555;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 23px;
+    right: 28px;
+    width: 280px;
+}
+.btn-cancel{
+    position: absolute;
+    right: 0;
+    background: red;
+}

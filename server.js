@@ -11,11 +11,17 @@ app.get("/", (req, res) => {
 });
 
 chat.on("connection", user => {
-  console.log("New user connected");
+  user.on('user connected', name => {
+    user.name = name;
+
+    chat.emit("users connected", chat.engine.clientsCount);
+  });
 
   user.on("chat message", msg => {
-    console.log("New chat message");
-
     chat.emit("chat message", msg);
+  });
+
+  user.on('disconnect', () => {
+    chat.emit("user disconnected", user.name);
   });
 });

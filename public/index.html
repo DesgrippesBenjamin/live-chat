@@ -2,17 +2,85 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css">
     <title>Live Chat</title>
   </head>
   <body>
-    <!-- Code Here -->
+    <button class="open-button" onclick="openForm()">Chat</button>
+    <main id="myForm" class="chat-popup">
+        <button type="button" class="btn-cancel" onclick="closeForm()">x</button>
+        <div class="window">
+          <ul id="messages"></ul>
+        </div>
+        <form id="message" class="form-container">
+          <input name="message" type="text" class="text" placeholder="Ecrir un message">
+          <button type="submit">Envoyer</button>
+          
+        </form>
+      <!-- </div> -->
+    </main>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       var socket = io();
+      var user = prompt('Your name?', 'Anonymous');
+      var userId = user + Date.now();
 
-      socket.on("chat message", function(msg) {
-        console.log(msg);
+      socket.on('users connected', users => {
+        console.log(users + ' users are connected');
       });
+
+      socket.on('user disconnected', user => {
+        console.log(user + ' is disconnected');
+      });
+
+      socket.emit('user connected', user);
+
+      socket.on("chat message", function (msg) {
+        var message = document.createElement('li');
+        message.innerHTML = `
+      <div>
+        <h1>${msg.name + " :"}</h1>
+        <p>${msg.message}</p>
+      </div>
+      <div>
+        <span>${new Intl.DateTimeFormat('fr', {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              second: 'numeric'
+            }).format(new Date(msg.date))}
+        </span>
+      </div>
+    `;
+        var messages = document.getElementById("messages");
+        messages.appendChild(message);
+        messages.scrollTop = messages.scrollHeight;
+      });
+      document
+        .getElementById('message')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          var msg = event.target.message.value;
+          socket.emit('chat message', {
+            name: user,
+            message: msg,
+            date: Date.now(),
+          });
+          event.target.message.value = '';
+        });
     </script>
+    <script>
+      function openForm() {
+        document.getElementById("myForm").style.display = "block";
+      }
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+      }
+      
+    </script>
+  
   </body>
 </html>
